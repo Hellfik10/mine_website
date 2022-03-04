@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Записи в блоге</h1>
+{% for item in news%}
+<div class="col-md6 border rounded">
+    <h2>Action #{{item.id}}</h2>
+    <div>
+        <table border="2">
+            <tr>
+                <th width="400"><center>Активность</center></th>
+                <th width="200"><center>ID командира</center></th>
+                <th width="100"><center>Коллаборации</center></th>
+                <th width="100"><center>Статус</center></th>
+            </tr>
+            <tr>
+                <th width="400"><center>{{item.job}}</center></th>
+                <th width="200"><center>{{item.team_leader}}</center></th>
+                <th width="100"><center>{{item.collaborators}}</center></th>
+                <th width="100"><center>{{item.is_finished}}</center></th>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <br>
+    {% for i in data %}
+        <p>{{i}} {{data[i]}}</p>
+    {% endfor %}
+{% endblock %}
