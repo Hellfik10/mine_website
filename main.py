@@ -17,7 +17,13 @@ def main():
 def index():
     db_sess = db_session.create_session()
     news = db_sess.query(Jobs)
-    return render_template("index.html", news=news)
+    users = db_sess.query(User).all()
+    name = {}
+    k = 0
+    for i in news:
+        name[i.team_leader] = users[k]
+        k += 1
+    return render_template("index.html", news=news, name=name)
 
 
 @app.route('/training/<prof>')
