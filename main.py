@@ -6,6 +6,7 @@ from data.jobs import Jobs
 from forms.user import RegisterForm
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "12Qwdc#d%32"
 
 
 def main():
@@ -70,7 +71,11 @@ def reqister():
         user = User(
             name=form.name.data,
             email=form.email.data,
-            about=form.about.data
+            surname=form.surname.data,
+            age=form.age.data,
+            position=form.position.data,
+            speciality=form.speciality.data,
+            address=form.address.data
         )
         user.set_password(form.password.data)
         db_sess.add(user)
