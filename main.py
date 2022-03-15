@@ -4,7 +4,8 @@ from data import db_session
 from data.users import User
 from data.jobs import Jobs
 from forms.user import RegisterForm
-from flask_login import LoginManager, login_user, logout_user, login_required
+from forms.JobsForms import JobsForm
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from forms.LoginForm import LoginForm
 
 app = Flask(__name__)
@@ -30,10 +31,11 @@ def index():
     news = db_sess.query(Jobs)
     users = db_sess.query(User).all()
     name = {}
-    k = 0
     for i in news:
-        name[i.team_leader] = users[k]
-        k += 1
+        for j in range(len(users)):
+            if i.team_leader == j + 1:
+                name[i.team_leader] = users[j]
+                break
     return render_template("index.html", news=news, name=name)
 
 
@@ -114,6 +116,25 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/addjob',  methods=['GET', 'POST'])
+@login_required
+def add_jobs():
+    form = JobsForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        job = Jobs()
+        job.job = form.title.data
+        job.team_leader = form.team_leader.data
+        job.work_size = form.work_size.data
+        job.collaborators = form.collaborators.data
+        job.is_finished = form.is_finished.data
+        db_sess.merge(job)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('addjob.html', title='Добавление новости',
+                           form=form)
 
 
 if __name__ == '__main__':
